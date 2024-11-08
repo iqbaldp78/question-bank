@@ -49,6 +49,7 @@ defmodule QuestionBankWeb.Router do
 
     # Login (create session)
     post "/login", SessionController, :create
+    post "/register", AccountController, :register_user
   end
 
   scope "/api/user", QuestionBankWeb.API, as: :api do

@@ -51,6 +51,8 @@ defmodule QuestionBank.Accounts do
 
   """
   def create_user(attrs \\ %{}) do
+    Logger.info("Creating user with attributes: #{inspect(attrs)}")
+
     %User{}
     |> User.changeset(attrs)
     |> Repo.insert()
