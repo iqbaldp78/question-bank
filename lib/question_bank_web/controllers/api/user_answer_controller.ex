@@ -3,6 +3,7 @@ defmodule QuestionBankWeb.API.UserAnswerController do
   alias QuestionBank.UserAnswer
   alias QuestionBank.ApiQuestions
   alias QuestionBank.ApiQuestions.Question
+  alias QuestionBankWeb.API.Leaderboard
 
   require Logger
 
@@ -20,6 +21,9 @@ defmodule QuestionBankWeb.API.UserAnswerController do
              is_correct: is_correct
            }) do
         {:ok, _user_answer} ->
+          # TODO: Update user's score
+          handle_correct_answer(user_id, is_correct)
+
           conn
           |> put_status(:created)
           |> json(%{status_code: "201", message: "Answer submitted successfully"})
@@ -34,6 +38,18 @@ defmodule QuestionBankWeb.API.UserAnswerController do
         conn
         |> put_status(:not_found)
         |> json(%{error: "Question not found: #{reason}"})
+    end
+  end
+
+  defp handle_correct_answer(user_id, is_correct) do
+    # TODO: Update user's score in the leaderboard
+    Logger.info("User #{user_id} answered correctly")
+
+    with {:ok, message} <- Leaderboard.update_leaderboard_score(user_id, is_correct) do
+      Logger.info(message)
+    else
+      {:error, changeset} ->
+        Logger.error("Failed to update leaderboard: #{inspect(changeset.errors)}")
     end
   end
 end
