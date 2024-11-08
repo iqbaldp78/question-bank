@@ -1,0 +1,16 @@
+<.simple_form :let={f} for={@changeset} action={@action}>
+  <.error :if={@changeset.action}>
+    Oops, something went wrong! Please check the errors below.
+  </.error>
+  <.input field={f[:question_text]} type="text" label="Question text" />
+  <.input field={f[:choice_a]} type="text" label="Choice a" />
+  <.input field={f[:choice_b]} type="text" label="Choice b" />
+  <.input field={f[:choice_c]} type="text" label="Choice c" />
+  <.input field={f[:choice_d]} type="text" label="Choice d" />
+  <.input field={f[:correct_answer]} type="text" label="Correct answer" />
+  <.input field={f[:category]} type="text" label="Category" />
+  <.input field={f[:difficulty_level]} type="number" label="Difficulty level" />
+  <:actions>
+    <.button>Save Question</.button>
+  </:actions>
+</.simple_form>
