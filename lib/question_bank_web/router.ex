@@ -59,6 +59,12 @@ defmodule QuestionBankWeb.Router do
     post "/answer", UserAnswerController, :create_user_answer
   end
 
+  scope "/", QuestionBankWeb do
+    pipe_through :browser
+
+    live "/leaderboard", LeaderboardLive, :index
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", QuestionBankWeb do
   #   pipe_through :api

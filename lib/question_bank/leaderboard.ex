@@ -12,6 +12,7 @@ defmodule QuestionBank.Leaderboard do
 
     case Repo.insert_or_update(changeset) do
       {:ok, _entry} ->
+        broadcast_leaderboard_update()
         {:ok, "Leaderboard score updated successfully"}
 
       {:error, changeset} ->
@@ -29,5 +30,17 @@ defmodule QuestionBank.Leaderboard do
       {_, false} -> current_score - 1
       {_, true} -> current_score + 1
     end
+  end
+
+  def get_leaderboard_list(limit \\ 10) do
+    Leaderboard
+    |> order_by(desc: :score)
+    |> limit(^limit)
+    |> Repo.all()
+    |> Repo.preload(:user)
+  end
+
+  defp broadcast_leaderboard_update do
+    Phoenix.PubSub.broadcast(QuestionBank.PubSub, "leaderboard", :update_leaderboard)
   end
 end

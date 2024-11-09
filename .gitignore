@@ -35,3 +35,4 @@ question_bank-*.tar
 npm-debug.log
 /assets/node_modules/
 
+.vscode
